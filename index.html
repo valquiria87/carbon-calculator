@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+      name="description"
+      content="Estime e compare emissões de CO₂e em viagens de passageiros e transporte de carga."
+    >
+    <title>Carbon Calculator</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script type="module" src="src/app.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#conteudo-principal">Pular para o conteúdo principal</a>
+
+    <header class="site-header">
+      <div class="container header-content">
+        <a class="brand" href="#inicio">Carbon Calculator</a>
+        <nav aria-label="Navegação principal">
+          <ul>
+            <li><a href="#calculadora">Calculadora</a></li>
+            <li><a href="#passageiros">Passageiros</a></li>
+            <li><a href="#carga">Carga</a></li>
+            <li><a href="#creditos">Créditos de carbono</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="conteudo-principal">
+      <section class="intro container" id="inicio" aria-labelledby="titulo-principal">
+        <p class="eyebrow">Mobilidade e emissões</p>
+        <h1 id="titulo-principal">Entenda o impacto estimado da sua viagem</h1>
+        <p>
+          Informe uma rota para consultar estimativas de emissões de passageiros
+          e de transporte de carga.
+        </p>
+      </section>
+
+      <section class="calculator-section container" id="calculadora" aria-labelledby="titulo-calculadora">
+        <h2 id="titulo-calculadora">Informe sua rota</h2>
+        <form id="trip-form">
+          <fieldset>
+            <legend>Origem e destino</legend>
+            <div class="form-fields">
+              <div class="form-field">
+                <label for="origin">Cidade de origem</label>
+                <input
+                  id="origin"
+                  name="origin"
+                  type="text"
+                  list="city-options"
+                  autocomplete="off"
+                  aria-autocomplete="list"
+                  aria-controls="city-options"
+                  aria-describedby="city-help origin-error"
+                  placeholder="Ex.: São Paulo"
+                  required
+                >
+                <span class="field-error" id="origin-error" aria-live="polite"></span>
+              </div>
+              <div class="form-field">
+                <label for="destination">Cidade de destino</label>
+                <input
+                  id="destination"
+                  name="destination"
+                  type="text"
+                  list="city-options"
+                  autocomplete="off"
+                  aria-autocomplete="list"
+                  aria-controls="city-options"
+                  aria-describedby="city-help destination-error"
+                  placeholder="Ex.: Rio de Janeiro"
+                  required
+                >
+                <span class="field-error" id="destination-error" aria-live="polite"></span>
+              </div>
+              <datalist id="city-options"></datalist>
+            </div>
+            <p class="field-help" id="city-help">
+              Selecione uma cidade cadastrada na lista de sugestões. A validação confirmará o cadastro.
+            </p>
+          </fieldset>
+
+          <div class="form-field">
+            <label for="manual-distance">Distância manual (obrigatória)</label>
+            <div class="input-with-unit">
+              <input
+                id="manual-distance"
+                name="manual-distance"
+                type="number"
+                min="0.1"
+                step="any"
+                inputmode="decimal"
+                placeholder="Informe a distância da viagem"
+                aria-describedby="distance-help"
+                required
+              >
+              <span aria-hidden="true">km</span>
+            </div>
+            <p class="field-help" id="distance-help">
+              Informe a distância da viagem em quilômetros.
+            </p>
+          </div>
+
+          <button type="submit" aria-describedby="calculation-status">
+            Calcular estimativas
+          </button>
+          <p class="status-message" id="calculation-status">
+            Informe origem, destino e a distância manual obrigatória para calcular as estimativas em kg CO₂e.
+          </p>
+        </form>
+      </section>
+
+      <section class="results-section container" id="passageiros" aria-labelledby="titulo-passageiros">
+        <h2 id="titulo-passageiros">Transporte de passageiros</h2>
+        <p>
+          Comparação por passageiro. As estimativas usam fatores em kg CO₂e por passageiro-km;
+          as ocupações consideradas e as premissas metodológicas estão descritas nas notas.
+        </p>
+        <p class="method-note">
+          A bicicleta considera emissão operacional direta; fabricação e ciclo de vida não estão incluídos.
+        </p>
+
+        <div class="comparison-grid" aria-live="polite">
+          <article class="result-card" aria-labelledby="titulo-bicicleta">
+            <h3 id="titulo-bicicleta">Bicicleta</h3>
+            <p>Emissão estimada por passageiro na viagem</p>
+            <output id="bicycle-result" for="origin destination manual-distance">Aguardando cálculo</output>
+            <span>kg CO₂e/passageiro</span>
+          </article>
+          <article class="result-card" aria-labelledby="titulo-carro">
+            <h3 id="titulo-carro">Carro</h3>
+            <p>Emissão estimada por passageiro na viagem</p>
+            <output id="car-result" for="origin destination manual-distance">Aguardando cálculo</output>
+            <span>kg CO₂e/passageiro</span>
+          </article>
+          <article class="result-card" aria-labelledby="titulo-onibus">
+            <h3 id="titulo-onibus">Ônibus rodoviários</h3>
+            <p>Emissão estimada por passageiro na viagem</p>
+            <output id="bus-result" for="origin destination manual-distance">Aguardando cálculo</output>
+            <span>kg CO₂e/passageiro</span>
+            <p class="method-note">
+              Fator estimado: <strong>0,0434009254 kg CO₂e/passageiro-km</strong>.
+              INEAVAR 2025, ano-base 2024: 691,0623 g CO₂e/veículo-km.
+              ANTT TRIIP 2025, dados de 2024: ocupação estimada em
+              15,9227549477 passageiros por veículo. O fator combina duas
+              bases com escopos estatísticos diferentes e não é um fator oficial.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="results-section container" id="carga" aria-labelledby="titulo-carga">
+        <h2 id="titulo-carga">Transporte de carga</h2>
+        <p>
+          O caminhão é apresentado separadamente, com intensidade em kg CO₂e por tonelada-km;
+          este resultado não é comparável diretamente aos modos de passageiros.
+        </p>
+
+        <div class="form-field">
+          <label for="cargo-mass">Carga transportada</label>
+          <div class="input-with-unit">
+            <input
+              id="cargo-mass"
+              name="cargo-mass"
+              type="number"
+              min="0.001"
+              step="any"
+              inputmode="decimal"
+              placeholder="Informe a massa da carga"
+              aria-describedby="cargo-help"
+            >
+            <span aria-hidden="true">t</span>
+          </div>
+          <p class="field-help" id="cargo-help">
+            Informe a massa efetivamente transportada, em toneladas.
+          </p>
+        </div>
+
+        <article class="result-card" aria-labelledby="titulo-caminhao" aria-live="polite">
+          <h3 id="titulo-caminhao">Caminhão</h3>
+          <p>Emissão estimada para a carga na viagem</p>
+          <output id="truck-result" for="origin destination manual-distance cargo-mass">Aguardando cálculo</output>
+          <span>kg CO₂e</span>
+        </article>
+      </section>
+
+      <section class="results-section container" id="creditos" aria-labelledby="titulo-creditos">
+        <h2 id="titulo-creditos">Estimativa de créditos de carbono</h2>
+        <p>
+          O custo é uma estimativa indicativa calculada com base nas emissões e no preço de
+          referência por tonelada de CO₂e informado por você.
+        </p>
+        <div class="form-field">
+          <label for="credit-price">Preço de referência por tonelada de CO₂e (opcional)</label>
+          <div class="input-with-unit">
+            <input
+              id="credit-price"
+              name="credit-price"
+              type="number"
+              min="0"
+              step="any"
+              inputmode="decimal"
+              placeholder="Preço a definir"
+              aria-describedby="credit-price-help"
+            >
+            <span aria-hidden="true">moeda/t CO₂e</span>
+          </div>
+          <p class="field-help" id="credit-price-help">
+            A aplicação usa o preço informado e não consulta cotações nem valida a fonte desse valor.
+          </p>
+        </div>
+        <div class="credit-results" id="credit-result">
+          <section class="credit-group" aria-labelledby="titulo-creditos-passageiros">
+            <h3 id="titulo-creditos-passageiros">Créditos para transporte de passageiros</h3>
+            <div class="comparison-grid" aria-live="polite">
+              <article class="result-card" aria-labelledby="titulo-credito-bicicleta">
+                <h4 id="titulo-credito-bicicleta">Bicicleta</h4>
+                <label for="credit-bicycle">Custo estimado para bicicleta</label>
+                <output id="credit-bicycle" for="bicycle-result credit-price">Aguardando cálculo</output>
+              </article>
+              <article class="result-card" aria-labelledby="titulo-credito-carro">
+                <h4 id="titulo-credito-carro">Carro</h4>
+                <label for="credit-car">Custo estimado para carro</label>
+                <output id="credit-car" for="car-result credit-price">Aguardando cálculo</output>
+              </article>
+              <article class="result-card" aria-labelledby="titulo-credito-onibus">
+                <h4 id="titulo-credito-onibus">Ônibus</h4>
+                <label for="credit-bus">Custo estimado para ônibus</label>
+                <output id="credit-bus" for="bus-result credit-price">Aguardando cálculo</output>
+              </article>
+            </div>
+          </section>
+
+          <section class="credit-group" aria-labelledby="titulo-creditos-carga">
+            <h3 id="titulo-creditos-carga">Créditos para transporte de carga</h3>
+            <article class="result-card" aria-labelledby="titulo-credito-caminhao" aria-live="polite">
+              <h4 id="titulo-credito-caminhao">Caminhão</h4>
+              <label for="credit-truck">Custo estimado para caminhão</label>
+              <output id="credit-truck" for="truck-result credit-price">Aguardando cálculo</output>
+            </article>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>
+          As emissões e os custos apresentados são estimativas baseadas em premissas e fontes
+          documentadas; não representam medições reais nem garantem compensação de carbono.
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>
