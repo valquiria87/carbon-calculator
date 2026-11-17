@@ -189,6 +189,24 @@ npm.cmd test
 
 Os testes cobrem cálculos de emissões e custo, entradas numéricas inválidas e funções de busca e validação de cidades.
 
+## Quais melhorias realizei
+
+- Estruturei a interface em HTML semântico e CSS responsivo mobile-first, com navegação por seções, foco visível e mensagens acessíveis.
+- Separei a aplicação em módulos para interface, cálculos, dados de cidades, fatores de emissão e utilitários.
+- Implementei estimativas em kg CO₂e, mantendo unidades metodologicamente distintas: kg CO₂e por passageiro-km para bicicleta, carro e ônibus; e um indicador ilustrativo em kg CO₂e por tonelada-km para caminhão.
+- Adicionei validações para cidades cadastradas e diferentes, distância manual obrigatória, carga opcional do caminhão e preço opcional para a estimativa de custos.
+- Documentei fatores, hipóteses e limitações, distinguindo estimativas do projeto de medições e fatores oficiais.
+- Criei testes automatizados com `node:test` para cálculos, entradas numéricas e busca e validação de cidades.
+
+## O que aprendi
+
+- A separação entre interface, regras de cálculo e dados facilita a leitura, a manutenção e os testes da aplicação.
+- Unidades de comparação precisam corresponder ao tipo de transporte: passageiro-km para modalidades de passageiros e tonelada-km para carga. Resultados com bases diferentes não devem ser comparados diretamente.
+- Converter fatores por veículo-km para fatores por passageiro-km depende de hipóteses de ocupação, que precisam ser explicitadas junto ao resultado.
+- Validações numéricas devem considerar não apenas valores negativos, mas também entradas não finitas e resultados que excedam a faixa numérica representável.
+- Acessibilidade envolve mais do que marcação semântica: foco, identificação de erros e mensagens de status também precisam orientar quem usa a interface.
+- Estimativas ambientais exigem transparência sobre fontes, hipóteses, escopo e incertezas; precisão numérica, por si só, não transforma uma estimativa em medição oficial.
+
 ## Melhorias futuras
 
 Os itens abaixo são possibilidades futuras e **não fazem parte das funcionalidades implementadas**:
